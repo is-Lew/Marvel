@@ -1,11 +1,11 @@
 package com.nology.Marvel;
 
-public class MarvelThumbnail {
+public class Thumbnail {
 
     private String path;
     private String extension;
 
-    public MarvelThumbnail(String path, String extension) {
+    public Thumbnail(String path, String extension) {
         this.path = path;
         this.extension = extension;
     }

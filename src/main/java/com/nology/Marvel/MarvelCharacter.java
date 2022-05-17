@@ -5,13 +5,13 @@ public class MarvelCharacter {
     private int id;
     private String name;
     private String description;
-//    private MarvelThumbnail marvelThumbnail;
+    private Thumbnail thumbnail;
 
-    public MarvelCharacter(int id, String name, String description) {
+    public MarvelCharacter(int id, String name, String description, Thumbnail thumbnail) {
         this.id = id;
         this.name = name;
         this.description = description;
-//        this.marvelThumbnail = marvelThumbnail;
+        this.thumbnail = thumbnail;
     }
 
     public int getId() {
@@ -38,11 +38,11 @@ public class MarvelCharacter {
         this.description = description;
     }
 
-//    public MarvelThumbnail getMarvelThumbnail() {
-//        return marvelThumbnail;
-//    }
-//
-//    public void setMarvelThumbnail(MarvelThumbnail marvelThumbnail) {
-//        this.marvelThumbnail = marvelThumbnail;
-//    }
+    public Thumbnail getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(Thumbnail thumbnail) {
+        this.thumbnail = thumbnail;
+    }
 }

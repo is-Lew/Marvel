@@ -1,7 +1,7 @@
 package com.nology.Marvel;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import org.json.simple.JSONArray;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +14,9 @@ import java.util.*;
 
 @RestController
 public class MarvelController {
+
+    @Autowired
+    private PrivateKey privateKey;
 
 
     @GetMapping("/characters")
@@ -31,10 +34,15 @@ public class MarvelController {
     private ResponseEntity<Object> getCharacterById(@PathVariable String characterId) {
         ApiKey key = new ApiKey();
         try {
-            String url = "https://gateway.marvel.com/v1/public/characters/"+characterId+"?&ts="+key.getTs()+"&apikey=a40a45905b13589385366a363f889776&hash="+key.getHash();
+            String url = "https://gateway.marvel.com/v1/public/characters/"+characterId+"?&ts="+key.getTs()+"&apikey="+privateKey.getPublicKey()+"&hash="+key.getHash();
             RestTemplate restTemplate = new RestTemplate();
             JsonNode character = restTemplate.getForEntity(url, JsonNode.class).getBody();
-            return ResponseEntity.status(HttpStatus.OK).body(character.get("data").get("results"));
+            assert character != null;
+            JsonNode characterResults = character.get("data").get("results");
+            Thumbnail characterThumbnail = new Thumbnail((characterResults.findValue("thumbnail").findValue("path").asText()), (characterResults.findValue("thumbnail").findValue("extension").asText()));
+            MarvelCharacter characterDetails = new MarvelCharacter((characterResults.findValue("id").asInt()),(characterResults.findValue("name").asText()),(characterResults.findValue("description").asText()), characterThumbnail);
+            return ResponseEntity.status(HttpStatus.OK).body(characterDetails);
+//            return ResponseEntity.status(HttpStatus.OK).body(character.get("data").get("results"));
         } catch (NoSuchElementException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
