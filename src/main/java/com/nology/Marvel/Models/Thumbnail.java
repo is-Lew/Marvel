@@ -1,4 +1,4 @@
-package com.nology.Marvel;
+package com.nology.Marvel.Models;
 
 public class Thumbnail {
 
