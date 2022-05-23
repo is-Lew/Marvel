@@ -1,0 +1,71 @@
+---
+openapi: 3.0.1
+info:
+  title: Marvel Api
+  description: Java Application utilising Marvel Api to provide information on characters.
+  version: "0.1"
+servers:
+- url: http://localhost:8080
+paths:
+  /characters:
+    get:
+      description: Return list of all character ID's. First call will populate list so can take up to 40 seconds. Subsequent calls will be from previously populated list.
+      responses:
+        "200":
+          description: No description
+      servers:
+      - url: http://localhost:8080
+    servers:
+    - url: http://localhost:8080
+  /characters/1017100:
+    get:
+      description: Return character object based on input ID e.g 1017100 returns A-Bomb.
+      responses:
+        "200":
+          description: Currently no catches for invalid IDs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+              examples:
+                "0":
+                  value: '{"id":1017100,"name":"A-Bomb (HAS)","description":"Rick Jones has been Hulk''s best bud since day one, but now he''s more than a friend...he''s a teammate! Transformed by a Gamma energy explosion, A-Bomb''s thick, armored skin is just as strong and powerful as it is blue. And when he curls into action, he uses it like a giant bowling ball of destruction! ","thumbnail":{"path":"http://i.annihil.us/u/prod/marvel/i/mg/3/20/5232158de5b16","extension":"jpg"}}'
+      servers:
+      - url: http://localhost:8080
+    servers:
+    - url: http://localhost:8080
+  /characters/1017100/es:
+    get:
+      description: Get Character details with translated descriptions. Use language codes e.g es translates the description to spanish.
+      responses:
+        "200":
+          description: Auto generated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+              examples:
+                "0":
+                  value: '{"id":1017100,"name":"A-Bomb (HAS)","description":"Rick Jones ha sido el mejor amigo de Hulk desde el primer día, pero ahora es más que un amigo... ¡es un compañero de equipo! Transformada por una explosión de energía Gamma, la piel gruesa y blindada de A-Bomb es tan fuerte y poderosa como azul. ¡Y cuando entra en acción, lo usa como una bola gigante de destrucción!","thumbnail":{"path":"http://i.annihil.us/u/prod/marvel/i/mg/3/20/5232158de5b16","extension":"jpg"}}'
+      servers:
+      - url: http://localhost:8080
+    servers:
+    - url: http://localhost:8080
+components:
+  schemas:
+    inline_response_200:
+      type: object
+      properties:
+        thumbnail:
+          type: object
+          properties:
+            path:
+              type: string
+            extension:
+              type: string
+        name:
+          type: string
+        description:
+          type: string
+        id:
+          type: integer
